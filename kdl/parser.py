@@ -1,6 +1,10 @@
 from collections import OrderedDict
-from grammar import KdlParser
-import re
+from .grammar import KdlParser
+import re, sys
+
+if sys.version_info.major == 3:
+	unicode = str
+	unichr = chr
 
 model = KdlParser(whitespace='', parseinfo=False)
 
@@ -125,7 +129,7 @@ class Parser(object):
 
 		if hasattr(document, 'read') and callable(document.read):
 			document = document.read()
-		if isinstance(document, str):
+		if str is not unicode and isinstance(document, str):
 			document = document.decode('utf-8')
 		ast = model.parse(document)
 
@@ -133,7 +137,7 @@ class Parser(object):
 		self.document += self.parseNodes(ast)
 
 	def parseNodes(self, ast):
-		if ast == [[None], []]: # TODO: Figure out why empty documents are so strangely handled
+		if ast[0] == [None]: # TODO: Figure out why empty documents are so strangely handled
 			return []
 		nodes = map(self.parseNode, ast)
 		return [node for node in nodes if node is not None]
@@ -193,8 +197,7 @@ class Parser(object):
 			return ast['boolean'] == 'true'
 		elif exists(ast, 'null'):
 			return None
-		print ast
-		assert False
+		raise 'Unknown AST node! Internal failure: %r' % ast
 
 	def parseString(self, ast):
 		if exists(ast, 'escstring'):
