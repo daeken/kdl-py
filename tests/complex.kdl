@@ -1,0 +1,12 @@
+omgwtfhax
+contents {
+  section "First section" {
+    paragraph name="This is the first paragraph"
+    paragraph "This is the second paragraph
+with internal newline\tand an escape
+and a unicode escape \u{9}"
+  }
+}
+"dpsojf" 0b1_01
+r#"123"#
+foo "bar" 0x123 :hax r#"foobar\podasjfpoj"# 123 123.4 123e-3

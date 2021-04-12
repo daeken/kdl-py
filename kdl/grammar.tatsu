@@ -1,0 +1,50 @@
+@@grammar :: Kdl
+@@whitespace :: //
+
+start = {ws} @:nodes {ws} $;
+
+nodes = {linespace} {@+:node {linespace}};
+node = [commented:'/-' {ws}] name:identifier {node_space props_and_args+:node_props_and_args} [{node_space} children:node_children {ws}] node_terminator;
+node_props_and_args = [commented:'/-' {ws}] (prop:prop | value:value);
+node_children = [commented:'/-' {ws}] '{' children:nodes '}';
+node_space = ({ws} escline {ws}) | {ws}+;
+node_terminator = single_line_comment | newline | ';' | $;
+identifier = string:string | bare:bare_identifier;
+bare_identifier = !digit @+:first_identifier_char {@+:rest_identifier_char}+;
+digit = /[0-9]/;
+first_identifier_char = !linespace !/[\\<{;\[=,"]/ /./;
+rest_identifier_char = !linespace !/[\\;=,"]/ /./;
+prop = name:identifier '=' value:value;
+value = symbol | number | string | boolean | null;
+
+string = raw_string | escaped_string;
+escaped_string = '"' escstring:{character}* '"';
+character = '\\' escape:escape | char:/[^"]/;
+escape = named:/[\\\/bfnrt]/ | 'u{' unichar:/[0-9a-fA-F]{1,6}/ '}';
+
+raw_string = 'r' rawstring:raw_string_hash;
+raw_string_hash = '#' @:raw_string_hash '#' | @:raw_string_quotes;
+raw_string_quotes = '"' @:/[^"]*/ '"';
+
+symbol = ':' symbol:identifier;
+
+number = hex | octal | binary | decimal;
+
+decimal = decimal:/[+\-]?[0-9][0-9_]*(\.[0-9][0-9_]*)?([eE][+-]?[0-9][0-9_]*)?/;
+hex = hex:/[+\-]?0x[0-9a-fA-F][0-9a-fA-F_]*/;
+octal = octal:/[+\-]?0o[0-7][0-7_]*/;
+binary = binary:/[+\-]?0b[01][01_]*/;
+
+boolean = boolean:('true' | 'false');
+null = null:('null');
+
+escline = '\' {ws} (single_line_comment | newline);
+
+linespace = $ | newline | ws | single_line_comment;
+
+single_line_comment = '//' ->newline;
+multi_line_comment = '/*' (commented_block | multi_line_comment) '*/';
+commented_block = {'*' /[^\/]/ | /[^*]/}*;
+
+newline = /(\r\n|[\r\n\u0085\u000C\u2028\u2029])/;
+ws = /([\t \u00A0\u1680\u2000\u2001\u2002\u2003\u2004\u2005\u2006\u2007\u2008\u2009\u200A\u202F\u205F\u3000]|\uFFEF)+/;
