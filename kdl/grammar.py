@@ -238,6 +238,9 @@ class KdlParser(Parser):
     def _bare_identifier_(self):  # noqa
         with self._ifnot():
             self._digit_()
+        with self._ifnot():
+            with self._group():
+                self._node_terminator_()
         self._first_identifier_char_()
         self.add_last_node_to_name('@')
 
@@ -255,7 +258,7 @@ class KdlParser(Parser):
         with self._ifnot():
             self._linespace_()
         with self._ifnot():
-            self._pattern('[\\\\<{;\\[=,"]')
+            self._pattern('[\\\\<{};\\[=,"]')
         self._pattern('.')
 
     @tatsumasu()

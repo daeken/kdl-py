@@ -257,3 +257,6 @@ def test_unicode_string():
 
 def test_unicode():
 	assert unicode(parse(u'ノード　お名前="☜(ﾟヮﾟ☜)"')) == u'ノード お名前="☜(ﾟヮﾟ☜)"'
+
+def test_short_identifier():
+	assert str(parse('T') == 'T')
