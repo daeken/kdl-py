@@ -27,6 +27,9 @@ smile "😁"
 // The following is a legal bare identifier:
 foo123~!@#$%^&*.:'|/?+ "weeee"
 
+// And you can also use unicode!
+ノード　お名前="☜(ﾟヮﾟ☜)"
+
 // kdl specifically allows properties and values to be
 // interspersed with each other, much like CLI commands.
 foo bar=true "baz" quux=false 1 2 3
@@ -37,11 +40,14 @@ print()
 doc = Document()
 doc.append(Node(name='simple-name', properties=None, arguments=[123], children=[Node(name='complex name here!', properties=None, arguments=None, children=None)]))
 print(doc)
+```
 
+```
 title "Some title"
 smile "😁"
 !@#$@$%Q#$%~@!40 !!!!!=true "1.2.3"
 foo123~!@#$%^&*.:'|/?+ "weeee"
+ノード お名前="☜(ﾟヮﾟ☜)"
 foo bar=true quux=false "baz" 1 2 3
 
 simple-name 123 {

@@ -1,6 +1,11 @@
+# -*- coding: utf-8 -*-
+
 import os
 import sys
 sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), '..')))
+
+if sys.version_info.major == 3:
+	unicode = str
 
 from kdl import parse, Symbol
 
@@ -234,5 +239,21 @@ def test_deep_raw_string_name():
 	assert str(doc) == 'r#"name\\goes\\here"#'
 
 def test_plain_ident():
-	assert str(parse('"foo"') == 'foo')
-	assert str(parse('r#"foo"#') == 'foo')
+	assert str(parse('"foo"')) == 'foo'
+	assert str(parse('r#"foo"#')) == 'foo'
+
+def test_unicode_ws():
+	assert str(parse(u'foo\u3000:bar')) == 'foo :bar'
+	assert str(parse(u'foo　:bar')) == 'foo :bar'
+
+def test_unicode_ident():
+	assert unicode(parse(u'ノード')) == u'ノード'
+
+def test_unicode_prop_ident():
+	assert unicode(parse(u'foo お名前=5')) == u'foo お名前=5'
+
+def test_unicode_string():
+	assert unicode(parse(u'foo "☜(ﾟヮﾟ☜)"')) == u'foo "☜(ﾟヮﾟ☜)"'
+
+def test_unicode():
+	assert unicode(parse(u'ノード　お名前="☜(ﾟヮﾟ☜)"')) == u'ノード お名前="☜(ﾟヮﾟ☜)"'

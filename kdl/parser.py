@@ -53,7 +53,7 @@ class Document(list):
 			parse(document, preserve_property_order, symbols_as_strings, dlist=self)
 
 	def __str__(self):
-		return '\n'.join(map(str, self))
+		return u'\n'.join(map(unicode, self))
 
 class Node(object):
 	def __init__(self, name, properties, arguments, children):
