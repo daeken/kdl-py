@@ -244,7 +244,7 @@ class KdlParser(Parser):
         def block1():
             self._rest_identifier_char_()
             self.add_last_node_to_name('@')
-        self._positive_closure(block1)
+        self._closure(block1)
 
     @tatsumasu()
     def _digit_(self):  # noqa
