@@ -81,7 +81,11 @@ class Node(object):
 		return u'\n'.join('\t' + line for line in fmt.split('\n')) if indent else fmt
 
 	def __repr__(self):
-		return 'Node(name=%r, properties=%r, arguments=%r, children=%r)' % (self.name, self.properties, self.arguments, self.children)
+		return 'Node(name=%r%s%s%s)' % (
+			self.name, 
+			', properties=%r' % self.properties if self.properties else '', 
+			', arguments=%r' % self.arguments if self.arguments else '', 
+			', children=%r' % self.children if self.children else '')
 
 	def items(self):
 		return self.properties.items() if self.properties else ()

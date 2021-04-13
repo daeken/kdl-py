@@ -10,7 +10,7 @@ if sys.version_info.major == 2:
 # This call to setup() does all the work
 setup(
 	name='kdl-py',
-	version='0.1.4',
+	version='0.1.5',
 	description='A Python library for the KDL Document Language.',
 	long_description=README,
 	long_description_content_type='text/markdown',
