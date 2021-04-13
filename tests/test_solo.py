@@ -260,3 +260,9 @@ def test_unicode():
 
 def test_short_identifier():
 	assert str(parse('T') == 'T')
+
+def test_messy_identifiers():
+	assert str(parse('struct :Mod')) == 'struct :Mod'
+	assert str(parse('stringref<uint32>[:numFiles] :Files') == 'stringref<uint32>[:numFiles] :Files')
+	assert str(parse('Placeable[:numPlaceables] :Placeables') == 'Placeable[:numPlaceables] :Placeables')
+	assert str(parse('foo :obj:stringTable[:index...]') == 'foo :obj:stringTable[:index...]')
