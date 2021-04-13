@@ -266,3 +266,11 @@ def test_messy_identifiers():
 	assert str(parse('stringref<uint32>[:numFiles] :Files') == 'stringref<uint32>[:numFiles] :Files')
 	assert str(parse('Placeable[:numPlaceables] :Placeables') == 'Placeable[:numPlaceables] :Placeables')
 	assert str(parse('foo :obj:stringTable[:index...]') == 'foo :obj:stringTable[:index...]')
+
+def test_empty_children():
+	doc = parse('foo { }')
+	assert len(doc[0].children) == 0
+	assert str(doc) == 'foo'
+	doc = parse('foo {}')
+	assert len(doc[0].children) == 0
+	assert str(doc) == 'foo'

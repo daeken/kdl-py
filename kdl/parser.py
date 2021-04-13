@@ -137,13 +137,14 @@ class Parser(object):
 		self.document += self.parseNodes(ast)
 
 	def parseNodes(self, ast):
-		if ast[0] == [None]: # TODO: Figure out why empty documents are so strangely handled
+		if ast[0] == [None] or (isinstance(ast[0], list) and len(ast[0]) > 0 and isinstance(ast[0][0], unicode)):
+			# TODO: Figure out why empty documents are so strangely handled
 			return []
 		nodes = map(self.parseNode, ast)
 		return [node for node in nodes if node is not None]
 
 	def parseNode(self, ast):
-		if exists(ast, 'commented'):
+		if len(ast) == 0 or exists(ast, 'commented'):
 			return
 		name = self.parseIdentifier(ast['name'])
 		children = props = args = None
