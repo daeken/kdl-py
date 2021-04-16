@@ -1,3 +1,5 @@
+from __future__ import unicode_literals
+
 from collections import OrderedDict
 from .grammar import KdlParser
 import regex, sys
@@ -22,7 +24,7 @@ namedEscapeInverse = {v : k for k, v in namedEscapes.items()}
 
 exists = lambda ast, name: ast is not None and name in ast and ast[name] is not None
 
-identRe = regex.compile(ur'^[^\\<{;\[=,"0-9\t \u00A0\u1680\u2000-\u200A\u202F\u205F\u3000\uFFEF\r\n\u0085\u000C\u2028\u2029][^\\;=,"\t \u00A0\u1680\u2000-\u200A\u202F\u205F\u3000\uFFEF\r\n\u0085\u000C\u2028\u2029]*$')
+identRe = regex.compile(r'^[^\\<{;\[=,"0-9\t \u00A0\u1680\u2000-\u200A\u202F\u205F\u3000\uFFEF\r\n\u0085\u000C\u2028\u2029][^\\;=,"\t \u00A0\u1680\u2000-\u200A\u202F\u205F\u3000\uFFEF\r\n\u0085\u000C\u2028\u2029]*$')
 def formatIdentifier(ident):
 	if identRe.match(ident):
 		return ident
@@ -31,8 +33,8 @@ def formatIdentifier(ident):
 
 def formatString(val):
 	if '\\' in val and '"' not in val:
-		return u'r#"%s"#' % val
-	return u'"%s"' % u''.join('\\' + namedEscapeInverse[c] if c in namedEscapeInverse else c for c in val)
+		return 'r#"%s"#' % val
+	return '"%s"' % ''.join('\\' + namedEscapeInverse[c] if c in namedEscapeInverse else c for c in val)
 
 def formatValue(val):
 	if isinstance(val, Symbol):
@@ -53,7 +55,7 @@ class Document(list):
 			parse(document, preserve_property_order, symbols_as_strings, dlist=self)
 
 	def __str__(self):
-		return u'\n'.join(map(unicode, self))
+		return '\n'.join(map(unicode, self))
 
 class Node(object):
 	def __init__(self, name, properties, arguments, children):
@@ -69,7 +71,7 @@ class Node(object):
 		fmt = formatIdentifier(self.name)
 		if self.properties:
 			for k, v in self.properties.items():
-				fmt += u' %s=%s' % (formatIdentifier(k), formatValue(v))
+				fmt += ' %s=%s' % (formatIdentifier(k), formatValue(v))
 		if self.arguments:
 			for v in self.arguments:
 				fmt += ' ' + formatValue(v)
@@ -78,7 +80,7 @@ class Node(object):
 			for child in self.children:
 				fmt += child.format(indent=True) + '\n'
 			fmt += '}'
-		return u'\n'.join('\t' + line for line in fmt.split('\n')) if indent else fmt
+		return '\n'.join('\t' + line for line in fmt.split('\n')) if indent else fmt
 
 	def __repr__(self):
 		return 'Node(name=%r%s%s%s)' % (
@@ -160,7 +162,7 @@ class Parser(object):
 
 	def parseIdentifier(self, ast):
 		if exists(ast, 'bare'):
-			return u''.join(ast['bare'])
+			return ''.join(ast['bare'])
 		return self.parseString(ast['string'])
 
 	def parsePropsAndArgs(self, ast):
@@ -206,7 +208,7 @@ class Parser(object):
 
 	def parseString(self, ast):
 		if exists(ast, 'escstring'):
-			val = u''
+			val = ''
 			for elem in ast['escstring']:
 				if exists(elem, 'char'):
 					val += elem['char']
