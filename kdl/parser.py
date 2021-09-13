@@ -22,7 +22,7 @@ namedEscapeInverse = {v : k for k, v in namedEscapes.items()}
 
 exists = lambda ast, name: ast is not None and name in ast and ast[name] is not None
 
-identRe = regex.compile(ur'^[^\\<{;\[=,"0-9\t \u00A0\u1680\u2000-\u200A\u202F\u205F\u3000\uFFEF\r\n\u0085\u000C\u2028\u2029][^\\;=,"\t \u00A0\u1680\u2000-\u200A\u202F\u205F\u3000\uFFEF\r\n\u0085\u000C\u2028\u2029]*$')
+identRe = regex.compile(r'^[^\\<{;\[=,"0-9\t \u00A0\u1680\u2000-\u200A\u202F\u205F\u3000\uFFEF\r\n\u0085\u000C\u2028\u2029][^\\;=,"\t \u00A0\u1680\u2000-\u200A\u202F\u205F\u3000\uFFEF\r\n\u0085\u000C\u2028\u2029]*$')
 def formatIdentifier(ident):
 	if identRe.match(ident):
 		return ident
